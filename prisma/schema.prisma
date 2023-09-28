@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Product {
-  id  Int  @id @default(autoincrement())
+  id  String  @id @default(uuid())
   // Place here you untranslatable columns
   stock Int 
   //
@@ -20,14 +20,14 @@ model Product {
 }
 
 model ProductTranslation {
-  id  Int  @id @default(autoincrement())
+  id  String  @id @default(uuid())
   // Place here you translatable columns
   name String 
   description String 
   //
 
   parentModel Product @relation(fields: [parentModelId], references: [id], onDelete: Cascade) 
-  parentModelId Int
+  parentModelId String @db.Uuid
   language Language @relation(fields: [languageId], references: [code], onUpdate: Cascade, onDelete: Restrict)
   languageId String
 
