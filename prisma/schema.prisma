@@ -12,20 +12,23 @@ datasource db {
 
 model Product {
   id  Int  @id @default(autoincrement())
-  name String 
-  description String 
+  // Place here you untranslatable columns
+
+  //
 
   translations ProductTranslation[]
 }
 
 model ProductTranslation {
   id  Int  @id @default(autoincrement())
+  // Place here you translatable columns
   name String 
   description String 
+  //
 
-  parentModel Product @relation(fields: [parentModelId], references: [id])
+  parentModel Product @relation(fields: [parentModelId], references: [id], onDelete: Cascade) 
   parentModelId Int
-  language Language @relation(fields: [languageId], references: [code])
+  language Language @relation(fields: [languageId], references: [code], onUpdate: Cascade, onDelete: Restrict)
   languageId String
 
 }
