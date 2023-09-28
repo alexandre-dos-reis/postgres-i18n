@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id  Int  @id @default(autoincrement())
+  name String 
+  description String 
+
+  translations ProductTranslation[]
+}
+
+model ProductTranslation {
+  id  Int  @id @default(autoincrement())
+  name String 
+  description String 
+
+  parentModel Product @relation(fields: [parentModelId], references: [id])
+  parentModelId Int
+  language Language @relation(fields: [languageId], references: [code])
+  languageId String
+
+}
+
+model Language {
+  code String @id
+  name String
+  nameInNativeLanguage String
+  dateFormat String
+  currency String
+  translations ProductTranslation[]
+}
+
+
+
+
