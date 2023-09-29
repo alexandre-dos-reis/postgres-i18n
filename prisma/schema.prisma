@@ -12,29 +12,29 @@ datasource db {
 
 model Product {
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  // Place here you untranslatable columns
-  stock Int 
-  //
-
   translations ProductTranslation[]
+
+  // Place your untranslatable columns
+  stock Int @default(0)
+  price Int @default(0)
+  //
 }
 
 model ProductTranslation {
-  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  // Place here you translatable columns
-  name String 
-  description String 
-  //
-
+  @@id([parentModelId, languageId])
   parentModel Product @relation(fields: [parentModelId], references: [id], onDelete: Cascade) 
   parentModelId String @db.Uuid
   language Language @relation(fields: [languageId], references: [code], onUpdate: Cascade, onDelete: Restrict)
-  languageId String
+  languageId LangCode
 
+  // Place your translatable columns
+  name String 
+  description String 
+  //
 }
 
 model Language {
-  code String @id
+  code LangCode @id
   name String
   nameInNativeLanguage String
   dateFormat String
@@ -42,6 +42,10 @@ model Language {
   translations ProductTranslation[]
 }
 
+enum LangCode {
+  FR
+  EN
+}
 
 
 
